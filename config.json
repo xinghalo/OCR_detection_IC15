@@ -4,10 +4,10 @@
     "gpus": [0],
     "data_loader": {
         "dataset":"icdar2015",
-        "data_dir": "./datasets/ICDAR2015",
+        "data_dir": "/Users/xingoo/Documents/dataset/ICDAR2015数据集",
         "batch_size": 1,
         "shuffle": true,
-        "workers": 4
+        "workers": 0
     },
     "validation": {
         "validation_split": 0.1,

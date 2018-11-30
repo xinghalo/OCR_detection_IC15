@@ -77,7 +77,7 @@ class ICDAR(Dataset):
         for image in self.imagesRoot.glob('*.jpg'):
             all_images.append(image)
             gt = self.gtRoot / image.with_name('gt_{}'.format(image.stem)).with_suffix('.txt').name
-            with gt.open(mode='r') as f:
+            with gt.open(mode='r', encoding='utf-8') as f:
                 bboxes = []
                 texts = []
                 for line in f:
