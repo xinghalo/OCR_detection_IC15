@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG, format='')
 
 def load_model(model_path, with_gpu):
     logger.info("Loading checkpoint: {} ...".format(model_path))
-    checkpoints = torch.load(model_path)
+    checkpoints = torch.load("/Users/xingoo/PycharmProjects/OCR_detection_IC15/saved/FOTS/model_best.pth.tar", map_location='cpu')
     if not checkpoints:
         raise RuntimeError('No checkpoint found.')
     config = checkpoints['config']
@@ -67,15 +67,15 @@ def main(args:argparse.Namespace):
     model = load_model(model_path, with_gpu)
     true_pos, true_neg, false_pos, false_neg = [0] * 4
     for image_fn in image_dir.glob('*.jpg'):
-        gt_path = annotation_dir / image_fn.with_name('gt_{}'.format(image_fn.stem)).with_suffix('.txt').name
-        labels  = load_annotation(gt_path)
+        #gt_path = annotation_dir / image_fn.with_name('gt_{}'.format(image_fn.stem)).with_suffix('.txt').name
+        #labels  = load_annotation(gt_path)
         #try:
         with torch.no_grad():
             #test = pathlib.Path('datasets/ICDAR2015/ch4_test_images/img_401.jpg')
             #if test.samefile(image_fn):
              #   pass
 
-            polys, im, res = Toolbox.predict(image_fn, model, with_image, output_img_dir, with_gpu, labels, output_txt_dir)
+            polys, im, res = Toolbox.predict(image_fn, model, with_image, output_img_dir, with_gpu, None, output_txt_dir)
                 
             
 #        except Exception as e:
@@ -84,18 +84,18 @@ def main(args:argparse.Namespace):
 #            #pdb.set_trace()
 #            traceback.print_exc()
             
-        true_pos += res[0]
-        false_pos += res[1]
-        false_neg += res[2]
-        if (true_pos + false_pos) > 0:
-            precision = true_pos / (true_pos + false_pos)
-        else:
-            precision = 0
-        if (true_pos + false_neg) > 0:
-            recall = true_pos / (true_pos + false_neg)
-        else:
-            recall = 0
-        print("TP: %d, FP: %d, FN: %d, precision: %f, recall: %f" % (true_pos, false_pos, false_neg, precision, recall))  
+        # true_pos += res[0]
+        # false_pos += res[1]
+        # false_neg += res[2]
+        # if (true_pos + false_pos) > 0:
+        #     precision = true_pos / (true_pos + false_pos)
+        # else:
+        #     precision = 0
+        # if (true_pos + false_neg) > 0:
+        #     recall = true_pos / (true_pos + false_neg)
+        # else:
+        #     recall = 0
+        # print("TP: %d, FP: %d, FN: %d, precision: %f, recall: %f" % (true_pos, false_pos, false_neg, precision, recall))
             
 
 
@@ -109,9 +109,9 @@ if __name__ == '__main__':
                         help='output dir for drawn images')
     parser.add_argument('-t', '--output_txt_dir', default='./results/groundtruth', type=pathlib.Path,
                         help='output dir for drawn images')
-    parser.add_argument('-i', '--image_dir', default='./datasets/ICDAR2015/ch4_test_images', type=pathlib.Path, 
+    parser.add_argument('-i', '--image_dir', default='/Users/xingoo/Documents/dataset/ICDAR2015数据集/ch4_test_images', type=pathlib.Path,
                         help='dir for input images')
-    parser.add_argument('-a', '--annotation_dir', default='./datasets/ICDAR2015/Challenge4_Test_Task1_GT', type=pathlib.Path, 
+    parser.add_argument('-a', '--annotation_dir', default='/Users/xingoo/Documents/dataset/ICDAR2015数据集/Challenge4_Test_Task1_GT', type=pathlib.Path,
                         help='dir for input images')
                         
     args = parser.parse_args()

@@ -10,6 +10,7 @@ SPEEDUP_SCALE = 512
 class SharedConv(nn.Module):
     '''
     sharded convolutional layers
+    共享卷积层
     '''
 
     def __init__(self, bbNet: nn.Module):

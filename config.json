@@ -1,6 +1,6 @@
 {
     "name": "FOTS",
-    "cuda": true,
+    "cuda": false,
     "gpus": [0],
     "data_loader": {
         "dataset":"icdar2015",

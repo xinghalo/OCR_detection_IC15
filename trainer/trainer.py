@@ -54,16 +54,19 @@ class Trainer(BaseTrainer):
 
             The metrics in log must have the key 'metrics'.
         """
+        # TODO 现在不知道这个Model Train都做了什么
         self.model.train()
 
         total_loss = 0
         total_metrics = np.zeros(len(self.metrics))
         for batch_idx, gt in enumerate(self.data_loader):
             img, score_map, geo_map, training_mask, transcript = gt
+            # 根据不同的设备做了tensor的转换
             img, score_map, geo_map, training_mask = self._to_tensor(img, score_map, geo_map, training_mask)
             recog_map = None
 
             self.optimizer.zero_grad()
+            # TODO 这个Model不知道是在做什么？感觉是带入到模型出结果的意思
             pred_score_map, pred_geo_map, pred_recog_map = self.model(img)
 
             loss = self.loss(score_map, pred_score_map, geo_map, pred_geo_map, pred_recog_map, recog_map, training_mask)
@@ -82,6 +85,8 @@ class Trainer(BaseTrainer):
                     len(self.data_loader) * self.data_loader.batch_size,
                     100.0 * batch_idx / len(self.data_loader),
                     loss.item()))
+
+        # TODO 这个应该是个可视化的工具，需要研究下
         self.visdom.plot('train_loss', total_loss / len(self.data_loader))
         log = {
             'loss': total_loss / len(self.data_loader),

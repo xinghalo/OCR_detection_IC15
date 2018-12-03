@@ -33,6 +33,12 @@ def main(config, resume):
         val = data_loader.val()
 
     os.environ['CUDA_VISIBLE_DEVICES'] = ','.join([str(i) for i in config['gpus']])
+
+    # 判断模型是检测模型还是识别模型
+    # 不同的模式，model和loss都不同
+
+    # FOTSModel
+    # {"mode": "detection"}
     model = eval(config['arch'])(config['model'])
     model.summary()
 

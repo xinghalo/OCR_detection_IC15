@@ -69,6 +69,7 @@ class BaseTrainer:
     def train(self):
         """
         Full training logic
+        整个流程的入口，开始训练
         """
         for epoch in range(self.start_epoch, self.epochs + 1):
             try:
